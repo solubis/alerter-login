@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible"
+            content="IE=edge">
+        <meta name="viewport"
+            content="width=device-width, initial-scale=1">
+        <meta name="description"
+            content="">
+        <meta name="author"
+            content="">
+
+        <title translate>Login</title>
+
+        <link rel="stylesheet" href="css/app.min.css">
+
+        <style>
+            [ng\:cloak],
+            [ng-cloak],
+            [data-ng-cloak],
+            [x-ng-cloak],
+            .ng-cloak,
+            .x-ng-cloak {
+                display: none !important;
+            }
+
+        </style>
+
+    </head>
+
+    <body class="login-content"
+        ng-controller="LoginController as ctrl"
+        ng-cloak>
+
+        <toaster></toaster>
+
+        <div class="logo">
+            <img width="200px"
+                src="images/logo@4x.png">
+        </div>
+
+        <!-- Login -->
+        <form name="form"
+            class="lc-block toggled">
+
+            <div class="input-group m-b-20">
+                <span class="input-group-addon"><i class="md md-person"></i></span>
+
+                <input type="text"
+                    class="form-control"
+                    autofocus
+                    name="username"
+                    ng-enter="ctrl.login(ctrl.username, ctrl.password)"
+                    ng-model="ctrl.username"
+                    ng-required="true"
+                    placeholder="{{  'Username' | translate }}">
+            </div>
+
+            <div class="input-group m-b-20">
+                <span class="input-group-addon"><i class="md md-accessibility"></i></span>
+
+                <input type="password"
+                    name="password"
+                    class="form-control"
+                    ng-enter="ctrl.login(ctrl.username, ctrl.password)"
+                    ng-model="ctrl.password"
+                    ng-required="true"
+                    placeholder="{{ 'Password' | translate }}">
+            </div>
+
+            <div class="error-message"
+                ng-if="ctrl.loginError">{{ ctrl.loginError | translate}}
+            </div>
+
+            <a href=""
+                class="btn btn-login btn-danger btn-float no-waves"
+                ng-click="ctrl.login(ctrl.username, ctrl.password)">
+                <i class="md md-arrow-forward"></i>
+            </a>
+
+        </form>
+
+        <!-- Config and i18n  -->
+        <script src="config.js"></script>
+        <script src="i18n.js"></script>
+
+        <!--  Libraries  -->
+        <script src="js/vendor.min.js"></script>
+        <script src="js/ui.min.js"></script>
+        <script src="js/core.min.js"></script>
+        <script src="js/app.min.js"></script>
+
+    </body>
+
+</html>

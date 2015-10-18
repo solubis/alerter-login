@@ -2,7 +2,7 @@
 
 import login from './modules/login/module';
 
-angular.module('login', ['fds.ui', 'fds.core', login.name])
+angular.module('login', ['alerter.ui', 'alerter.core', login.name])
 
     .config(($urlRouterProvider, $configProvider, $securityProvider) => {
         var config = $configProvider.$get();

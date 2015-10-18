@@ -1,6 +1,6 @@
-# FDS Security
+# Alerter Security
 
-FDS Security has two parts:
+Alerter Security has two parts:
 
 - External Login Form Application that authenticates user and passes token to client application
 - Library that automates token management, routing security, authorization
@@ -69,11 +69,11 @@ Example:
 
 Be aware that $location.search works only in HTML5 mode with hashbang in URL (if not, you need to use window.location.seacrh instead).
 
-All above tasks are automated when using FDS Security Library (read below).
+All above tasks are automated when using Alerter Security Library (read below).
 
-## Using FDS Security library to automate token management
+## Using Alerter Security library to automate token management
 
-FDS Security Library provides following functionality:
+Alerter Security Library provides following functionality:
 
 1. token retrieval from URL
 2. token decoding
@@ -82,20 +82,20 @@ FDS Security Library provides following functionality:
 5. redirect to login form using current URL, error handling etc.
 6. configuration management
 
-### To use FDS Security Libarary
+### To use Alerter Security Library
 
 #### Add to bower.json dependencies
 
-`"core": "git@code.impaqgroup.com:fds-components/core.git#develop"`
+`"core": "git@gitlab.com:solubis/alerter-core.git"`
 
-#### Add module `FDS.security` to angular
+#### Add module `alerter.core` to angular
 
-`angular.module('squealer', ['fds.ui', 'fds.core', 'modules.html'...]);`
+`angular.module('alerter', ['alerter.ui', 'alerter.core', 'modules.html'...]);`
 
 ####  Add parameters to `config.js` if you want to use `$config` service and provider
 
 ```
-window.IQ_CONFIG = {
+window.ALRTER_CONFIG = {
     'version': '0.13.2',
     'restURL': 'http://' + window.location.hostname + ':8083',
     'loginURL': 'http://' + window.location.hostname + ':9999',
