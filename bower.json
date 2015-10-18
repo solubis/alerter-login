@@ -1,0 +1,26 @@
+{
+    "name": "Login Application",
+    "version": "1.0.0-RC1",
+    "authors": [
+        "Jurek Błaszczyk"
+    ],
+    "description": "Alerter Login Application",
+    "license": "Solubis",
+    "ignore": [
+        "**/.*",
+        "node_modules",
+        "lib",
+        "test",
+        "tests",
+        "pages",
+        "index.html",
+        "/js"
+    ],
+    "dependencies": {
+        "ui": "git@gitlab.com:solubis/alerter-ui.git",
+        "core": "git@gitlab.com:solubis/alerter-core.git"
+    },
+    "devDependencies": {
+        "system.js": "*"
+    }
+}

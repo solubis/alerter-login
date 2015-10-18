@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="../src/styles/app.css">
+</head>
+
+<body ng-app="app">
+
+<toaster></toaster>
+
+<div ui-view class="container"></div>
+
+<!--  Config and i18n  -->
+<script src="config.js"></script>
+
+<!--  Libraries  -->
+<script src="../lib/iqui/dist/js/vendor.js"></script>
+<script src="../lib/iqui/dist/js/iqui.js"></script>
+<script src="../dist/js/iqsec.js"></script>
+
+<script>
+    angular.module('app', ['iq.ui', 'iq.security'])
+
+        .config(function ($stateProvider, $urlRouterProvider, $configProvider, $securityProvider, $oauthTokenProvider) {
+            var config = $configProvider.$get();
+
+            $securityProvider.configure(config);
+            $oauthTokenProvider.configure(config);
+
+            $urlRouterProvider.otherwise(function ($injector) {
+                $injector.get('$state').go('public');
+            });
+
+            $stateProvider
+                .state('private', {
+                    url: '/private',
+                    template: '<a ui-sref="private">Private</a> <a ui-sref="public">Public</a> ' +
+                    '<h1>Private</h1>' +
+                    '<p>{{ ctrl.permissions }}</p>' +
+                    '<button ng-click="ctrl.logout()" class="btn btn-primary">Logout</button>',
+                    controller: 'AppController as ctrl',
+                    access: {
+                        requiredPermissions: ['ALERTER_ALERT_LIST']
+                    }
+                })
+                .state('public', {
+                    url: '/public',
+                    template: '<a ui-sref="private">Private</a> <a ui-sref="public">Public</a><h1>Public</h1><button ng-click="ctrl.logout()" class="btn btn-primary">Login</button>',
+                    controller: 'AppController as ctrl'
+                });
+        })
+
+        .run(function ($rootScope, $security, $toast, $window, $timeout) {
+            $rootScope.isAuthenticated = $security.isAuthenticated();
+
+            /**
+             * Optional - sample of state routing usin iQSecurity
+             */
+
+            /**
+             * Callback just before sending user to login form when error of Login Required is detected
+             */
+            var onLoginRequired = function () {
+                $toast.error('Authorization error', 'Full authentication is required to access this resource');
+            };
+
+            /**
+             * Callback just before sending error of Not Authorised is detected
+             */
+
+            var onNotAuthorised = function () {
+                $toast.error('Authorization error', 'Full authentication is required to access this resource');
+                $window.location.href = '#public';
+            };
+
+            $rootScope.$on("$stateChangeStart", function (event, toState) {
+                return $security.stateChangeStart(event, toState, onLoginRequired, onNotAuthorised)
+            });
+
+            $rootScope.$on('$http:error:authorization', function (event, error) {
+                $toast.error(error.message + ' : {0}', error.url);
+            });
+
+            $rootScope.$on('$oauth:error', function (event, error) {
+                if (error['status'] !== 403) {
+                    $security.redirectToLogin();
+                    $toast.error('OAuth error', error);
+                } else {
+                    $toast.error('OAuth error', error);
+                }
+            });
+        })
+        .controller('AppController', function ($scope, $security, $http, $config) {
+            var _this = this;
+
+            $http.get($config.restURL + '/version')
+                .then(function (response) {
+                    console.log('REST ' + response.data.version);
+                });
+
+            this.logout = function () {
+                $security.logout();
+            };
+
+            this.permissions = $security.getPermissions() ? $security.getPermissions().join(', ') : '';
+        });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../src/styles/app.css">
+</head>
+
+<body ng-app="app" ng-controller="AppController as ctrl">
+
+<h1>Simple Demo</h1>
+
+<p> This applications configures security and oath service providers from config.js</p>
+<p> Token retrieval, decoding, persisting in localstorage, signature verification and authorization header insertion are all automatic</p>
+
+<p>{{ ctrl.permissions }}</p>
+
+<button ng-click="ctrl.logout()" class="btn btn-primary">Logout</button>
+
+<!-- Config and i18n -->
+<script src="config.js"></script>
+
+<!-- Libraries -->
+<script src="../lib/iqui/dist/js/vendor.js"></script>
+<script src="../lib/iqui/dist/js/iqui.js"></script>
+<script src="../dist/js/iqsec.js"></script>
+
+<script>
+    angular.module('app', ['iq.ui', 'iq.security'])
+
+        .config(function ($configProvider, $securityProvider, $oauthTokenProvider) {
+            var config = $configProvider.$get();
+
+            $securityProvider.configure(config);
+            $oauthTokenProvider.configure(config);
+        })
+
+        .controller('AppController', function ($scope, $security, $http, $config) {
+            var _this = this;
+
+            $http.get($config.restURL + '/version')
+                .then(function (response) {
+                    console.log('REST ' + response.data.version);
+                });
+
+            this.logout = function () {
+                $security.logout();
+            };
+
+            this.permissions = $security.getPermissions() ? $security.getPermissions().join(', ') : '';
+        });
+</script>
+
+</body>
+</html>
