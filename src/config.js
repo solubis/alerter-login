@@ -1,10 +1,8 @@
-window.IQ_CONFIG = {
-    /*  Local configuration
+var localhost = window.location.protocol + '//' + window.location.hostname;
+var port = window.location.port || '80';
 
-    'oauthURL': 'http://' + window.location.hostname + ':8080/security',
-
-    */
-
-    'oauthURL': 'http://10.9.8.166:5080/security',
-    'redirectToLoginTimeout': 10000
+window.ALERTER_CONFIG = {
+    'oauthURL': localhost + ':' + port + '/security',
+    'redirectToLoginTimeout': 10000,
+    'mockupEnabled': true
 };
