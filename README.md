@@ -270,4 +270,4 @@ $security.getOrganisation();
 
 ## Copyright and License
 
-Copyright 2015 IMPAQ
+Copyright 2015 SOLUBIS
